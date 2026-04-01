@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /app-ads.txt
+Disallow: /agreement/
+Disallow: /jigsawcard/
+
