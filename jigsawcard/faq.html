@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Help &amp; FAQ | Jigsaw Cards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #FAF7F2;
+            --card-bg: #FFFFFF;
+            --text-heading: #2D2520;
+            --text-body: #594E46;
+            --text-muted: #8E8278;
+            --accent-clay: #A36940;
+            --accent-clay-hover: #905932;
+            --accent-light: #F4ECE3;
+            --accent-sand: #EDE4D8;
+            --border-subtle: #EDE7DE;
+            --badge-bg: #F4EFEB;
+            --badge-text: #966139;
+            --shadow-soft: 0 4px 20px rgba(60, 48, 38, 0.04);
+            --shadow-hover: 0 8px 28px rgba(60, 48, 38, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-body);
+            padding: 32px 18px 60px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 顶部品牌与标语区 */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 10px 8px 0;
+        }
+
+        .header-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--badge-text);
+            background-color: var(--badge-bg);
+            padding: 7px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(163, 105, 64, 0.12);
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-family: "Fraunces", Georgia, serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-heading);
+            letter-spacing: -0.5px;
+            line-height: 1.25;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 440px;
+            margin: 0 auto;
+            line-height: 1.55;
+        }
+
+        /* FAQ 列表容器 */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .faq-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+        }
+
+        .faq-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(163, 105, 64, 0.25);
+        }
+
+        .faq-question {
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .question-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .question-icon {
+            font-size: 20px;
+            line-height: 1;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background-color: var(--bg-canvas);
+        }
+
+        .question-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-heading);
+            line-height: 1.35;
+        }
+
+        .toggle-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--bg-canvas);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease;
+        }
+
+        .chevron {
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid var(--accent-clay);
+            border-bottom: 2px solid var(--accent-clay);
+            transform: rotate(45deg);
+            margin-top: -3px;
+            transition: transform 0.25s ease;
+        }
+
+        .faq-card.open .toggle-btn {
+            background-color: var(--accent-light);
+            border-color: var(--accent-sand);
+            transform: rotate(180deg);
+        }
+
+        .faq-card.open .chevron {
+            margin-top: 3px;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #FDFAF6;
+            border-top: 1px solid transparent;
+        }
+
+        .faq-card.open .faq-answer {
+            max-height: 500px;
+            border-top-color: var(--border-subtle);
+        }
+
+        .faq-answer-inner {
+            padding: 18px 22px 22px;
+            font-size: 14.5px;
+            color: var(--text-body);
+            line-height: 1.68;
+        }
+
+        .faq-answer-inner strong {
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        /* 标签与高亮框 */
+        .pill-coming-soon {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #8C5934;
+            background: #EFE4D6;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+        }
+
+        /* 底部信笺质感联系区域 */
+        .support-card {
+            margin-top: 40px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #FAF6F0 100%);
+            border: 1px solid var(--border-subtle);
+            border-radius: 22px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .support-card h2 {
+            font-family: "Fraunces", Georgia, serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+        }
+
+        .support-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            max-width: 420px;
+            margin: 0 auto 20px;
+            line-height: 1.55;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #B57745 0%, #985C2E 100%);
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 14px 34px;
+            border-radius: 30px;
+            text-decoration: none;
+            box-shadow: 0 4px 18px rgba(152, 92, 46, 0.28);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        }
+
+        .contact-btn:hover {
+            filter: brightness(1.04);
+            box-shadow: 0 6px 22px rgba(152, 92, 46, 0.35);
+        }
+
+        .contact-btn:active {
+            transform: scale(0.97);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 400px) {
+            body {
+                padding: 24px 14px 48px;
+            }
+            .header h1 {
+                font-size: 27px;
+            }
+            .faq-question {
+                padding: 16px 18px;
+            }
+            .question-text {
+                font-size: 15px;
+            }
+            .faq-answer-inner {
+                padding: 14px 18px 18px;
+                font-size: 14px;
+            }
+            .support-card {
+                padding: 26px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部导语 -->
+        <header class="header">
+            <div class="header-tag">
+                <span>Cozy Puzzle Guide</span>
+            </div>
+            <h1>How can we help?</h1>
+            <p>Helpful tips, lovely tricks, and answers to make your Jigsaw Cards puzzle journey as relaxing and joyful as possible.</p>
+        </header>
+
+        <!-- FAQ 卡片列表 -->
+        <div class="faq-list">
+
+            <!-- 1. 基础玩法 -->
+            <div class="faq-card open">
+                <div class="faq-question" onclick="toggleCard(this)">
+                    <div class="question-title-wrap">
+                        <span class="question-icon">🧩</span>
+                        <span class="question-text">How do I play Jigsaw Cards?</span>
+                    </div>
+                    <div class="toggle-btn"><i class="chevron"></i></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Slide and arrange the puzzle cards freely across the wooden board. When cards that belong next to each other in the original artwork meet side by side, they will smoothly snap together into a larger united block! Continue connecting matching pieces until the complete masterpiece is revealed.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 翻面牌玩法 -->
+            <div class="faq-card open">
+                <div class="faq-question" onclick="toggleCard(this)">
+                    <div class="question-title-wrap">
+                        <span class="question-icon">🎴</span>
+                        <span class="question-text">What are the face-down cards?</span>
+                    </div>
+                    <div class="toggle-btn"><i class="chevron"></i></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        In some of the trickier puzzles, certain cards start with their decorative backs facing up! Simply tap on any face-down card to take a quick peek at its hidden picture. Memorize the pattern, slide it to connect with its neighbor, and it will stay face up forever once merged!
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 提示系统 -->
+            <div class="faq-card open">
+                <div class="faq-question" onclick="toggleCard(this)">
+                    <div class="question-title-wrap">
+                        <span class="question-icon">💡</span>
+                        <span class="question-text">How do Hints work when I get stuck?</span>
+                    </div>
+                    <div class="toggle-btn"><i class="chevron"></i></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Whenever you need a gentle nudge, tap the glowing <strong>Hint</strong> lightbulb in the bottom right corner. It will show you exactly which card to move and guide it to its perfect spot. You start with complimentary hints, and you can easily collect 3 extra hints whenever you wish by watching a short video. Free daily hints are also gifted to you every day!
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 离线支持 -->
+            <div class="faq-card open">
+                <div class="faq-question" onclick="toggleCard(this)">
+                    <div class="question-title-wrap">
+                        <span class="question-icon">✈️</span>
+                        <span class="question-text">Can I play offline without Wi-Fi?</span>
+                    </div>
+                    <div class="toggle-btn"><i class="chevron"></i></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Yes, absolutely! Your puzzles and gallery achievements are stored directly on your iPhone and iPad. You can enjoy quiet, cozy puzzle sessions anytime, anywhere—whether you are on a flight, traveling outdoors, or enjoying a calm morning without an internet connection.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 去广告与 VIP -->
+            <div class="faq-card">
+                <div class="faq-question" onclick="toggleCard(this)">
+                    <div class="question-title-wrap">
+                        <span class="question-icon">✨</span>
+                        <span class="question-text">Can I remove ads or get an Ad-Free Pass?</span>
+                    </div>
+                    <div class="toggle-btn"><i class="chevron"></i></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <span class="pill-coming-soon">Stay tuned! Coming soon</span><br>
+                        We are currently handcrafting an uninterrupted Ad-Free experience and special gallery expansion packs to make your puzzle time even more serene. These will be available in an upcoming version update!
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. 建议与客服支持 -->
+            <div class="faq-card">
+                <div class="faq-question" onclick="toggleCard(this)">
+                    <div class="question-title-wrap">
+                        <span class="question-icon">💌</span>
+                        <span class="question-text">I have an idea or need support, how do I reach you?</span>
+                    </div>
+                    <div class="toggle-btn"><i class="chevron"></i></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        We genuinely love hearing from our puzzle players! Whether you have an idea for new artwork themes or encountered something that did not feel right, please send us a note at <strong>agqwer99@gmail.com</strong>. We read and respond to every note personally.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 底部信笺联系卡片 -->
+        <section class="support-card">
+            <h2>Still have a question?</h2>
+            <p>Our friendly support team is always delighted to hear from you and assist with any question or suggestion.</p>
+            <a href="mailto:agqwer99@gmail.com?subject=Jigsaw%20Cards%20Support%20Request" class="contact-btn">
+                <span>Write to Us</span>
+            </a>
+        </section>
+
+        <footer class="footer-note">
+            <p>&copy; 2026 Jigsaw Cards Studio. Made with care for puzzle lovers.</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleCard(element) {
+            var card = element.closest(".faq-card");
+            if (card) {
+                card.classList.toggle("open");
+            }
+        }
+    </script>
+</body>
+</html>
